@@ -10,15 +10,15 @@
 
     <string-array name="languages">
 
-        <item>C</item>
+        <item>Texas</item>
 
-        <item>C++</item>
+        <item>Alabama</item>
 
-        <item>Java</item>
+        <item>Georgia</item>
 
-        <item>JavaScript</item>
+        <item>California</item>
 
-        <item>VisualBasic</item>
+        <item>New York</item>
 
     </string-array>
 
