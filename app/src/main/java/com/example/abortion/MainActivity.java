@@ -1,4 +1,5 @@
 package com.example.abortion;
+import android.util.ArrayMap;
 import android.widget.TextView;
 import android.os.Bundle;
 import android.os.Bundle;
@@ -8,6 +9,8 @@ import android.widget.ImageView;
 
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -41,6 +44,9 @@ import android.widget.Spinner;
 
 import android.widget.Toast;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     ImageView mDogImageView;
     TextView textView;
@@ -54,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         textView = findViewById(R.id.textView);
         mDogImageView = findViewById(R.id.dogImageView);
         nextDogButton = findViewById(R.id.nextDogButton);
-        abortionButton= findViewById(R.id.abortionButton);
+        abortionButton = findViewById(R.id.abortionButton);
 
         // attaching on click listener to the button so that `loadDogImage()`
         // function is called everytime after clicking it.
@@ -122,66 +128,60 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         // to the Volley request queue
         volleyQueue.add(jsonObjectRequest);
     }
-
+    private String selectedState = "";
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        String text = adapterView.getItemAtPosition(i).toString();
-        Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
-    }
+        selectedState = adapterView.getItemAtPosition(i).toString();
+        Toast.makeText(adapterView.getContext(), selectedState, Toast.LENGTH_SHORT).show();    }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
 
-
     private void loadAbortionInfo() {
-
         // getting a new volley request queue for making new requests
         RequestQueue volleyQueue = Volley.newRequestQueue(MainActivity.this);
-        // url of the api through which we get random dog images
-        String url = "https://dog.ceo/api/breeds/image/random";
+        // url of the api through which we get abortion information
+        String url = "https://api.abortionpolicyapi.com/v1/gestational_limits/states/"+ selectedState + "/";
 
-        // since the response we get from the api is in JSON, we
-        // need to use `JsonObjectRequest` for parsing the
-        // request response
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 // we are using GET HTTP request method
                 Request.Method.GET,
                 // url we want to send the HTTP request to
                 url,
-                // this parameter is used to send a JSON object to the
-                // server, since this is not required in our case,
-                // we are keeping it `null`
                 null,
 
-                // lambda function for handling the case
-                // when the HTTP request succeeds
-                (Response.Listener<JSONObject>) response -> {
-                    // get the image url from the JSON object
-                    String dogImageUrl;
+                response -> {
+                    // handle the response
                     try {
-                        dogImageUrl = response.getString("message");
-                        // load the image into the ImageView using Glide.
-                    textView.setText(dogImageUrl);
+                        JSONObject data = response.getJSONObject(selectedState);
+                        String info = data.getString("banned_after_weeks_since_LMP");
+                        String info2 = data.getString("exception_life");
+                        // update the TextView with the retrieved information
+                        textView.setText("Exception for life: "+ info2 +"," + " banned after weeks since LMP:"+ info);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 },
 
-                // lambda function for handling the case
-                // when the HTTP request fails
-                (Response.ErrorListener) error -> {
-                    // make a Toast telling the user
-                    // that something went wrong
-                    Toast.makeText(MainActivity.this, "Some error occurred! Cannot fetch dog image", Toast.LENGTH_LONG).show();
-                    // log the error message in the error stream
-                    Log.e("MainActivity", "loadDogImage error: ${error.localizedMessage}");
+                error -> {
+                    // handle the error
+                    Toast.makeText(MainActivity.this, "Some error occurred! Cannot fetch abortion information", Toast.LENGTH_LONG).show();
+                    Log.e("MainActivity", "loadAbortionInfo error: " + error.getLocalizedMessage());
                 }
-        );
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                // Add the API key to the request headers
+                Map<String, String> headers = new HashMap<>();
+                headers.put("token", "xxxxx");
+                return headers;
+            }
+        };
 
         // add the json request object created above
         // to the Volley request queue
         volleyQueue.add(jsonObjectRequest);
     }
-}
+};
