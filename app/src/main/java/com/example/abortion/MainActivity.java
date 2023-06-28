@@ -1,4 +1,6 @@
 package com.example.abortion;
+import static com.example.abortion.BuildConfig.API_KEY;
+
 import android.util.ArrayMap;
 import android.widget.TextView;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.BuildConfig;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -46,7 +49,6 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Map;
-
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     ImageView mDogImageView;
     TextView textView;
@@ -140,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void loadAbortionInfo() {
+        String myApiKey = API_KEY;
         // getting a new volley request queue for making new requests
         RequestQueue volleyQueue = Volley.newRequestQueue(MainActivity.this);
         // url of the api through which we get abortion information
@@ -175,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             public Map<String, String> getHeaders() throws AuthFailureError {
                 // Add the API key to the request headers
                 Map<String, String> headers = new HashMap<>();
-                headers.put("token", "xxxxx");
+                headers.put("token", myApiKey);
                 return headers;
             }
         };
@@ -184,4 +187,5 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         // to the Volley request queue
         volleyQueue.add(jsonObjectRequest);
     }
+
 };

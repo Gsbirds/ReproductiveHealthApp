@@ -2,11 +2,16 @@ plugins {
     id 'com.android.application'
 }
 
+def localPropertiesFile = rootProject.file("local.properties")
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(localPropertiesFile))
+
 android {
     namespace 'com.example.abortion'
     compileSdk 33
 
     defaultConfig {
+        buildConfigField "String", "API_KEY", "\"${localProperties.getProperty("apiKey")}\""
         applicationId "com.example.abortion"
         minSdk 24
         targetSdk 33
@@ -28,6 +33,7 @@ android {
     }
     buildFeatures {
         viewBinding true
+        buildConfig = true
     }
 }
 
