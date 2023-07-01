@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         selectedState = adapterView.getItemAtPosition(i).toString();
-        Toast.makeText(adapterView.getContext(), selectedState, Toast.LENGTH_SHORT).show();    }
+    }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         String info = data.getString("banned_after_weeks_since_LMP");
                         String info2 = data.getString("exception_life");
                         // update the TextView with the retrieved information
-                        textView.setText("Exception for life: "+ info2 +"," + " banned after weeks since LMP:"+ info);
+                        textView.setText("Exception for life: "+ info2 +"," + " \nbanned after weeks since LMP:"+ info);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
