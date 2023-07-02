@@ -1,7 +1,11 @@
 package com.example.abortion;
 import static com.example.abortion.BuildConfig.API_KEY;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.ArrayMap;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.os.Bundle;
 import android.os.Bundle;
@@ -55,17 +59,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     Button nextDogButton;
     Button abortionButton;
 
+    Switch darkView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textView = findViewById(R.id.textView);
+        darkView=findViewById(R.id.switch1);
         mDogImageView = findViewById(R.id.dogImageView);
         nextDogButton = findViewById(R.id.nextDogButton);
         abortionButton = findViewById(R.id.abortionButton);
 
         // attaching on click listener to the button so that `loadDogImage()`
         // function is called everytime after clicking it.
+        darkView.setOnClickListener(View -> setDarkView());
         nextDogButton.setOnClickListener(View -> loadDogImage());
         abortionButton.setOnClickListener(View -> loadAbortionInfo());
 
@@ -79,6 +87,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         spinnerLanguages.setAdapter(adapter);
         spinnerLanguages.setOnItemSelectedListener(this);
 
+    }
+    private void setDarkView() {
+        View rootView = getWindow().getDecorView().getRootView();
+
+        // Check if the current background color matches the desired color
+        Drawable background = rootView.getBackground();
+        int currentColor = 0;
+        if (background instanceof ColorDrawable) {
+            currentColor = ((ColorDrawable) background).getColor();
+        }
+        if (currentColor == Color.parseColor("#e9e0c9")) {
+            rootView.setBackgroundColor(Color.parseColor("#000000")); // Set the new color here
+        } else {
+            rootView.setBackgroundColor(Color.parseColor("#e9e0c9")); // Set the original color here
+        }
+        Toast.makeText(MainActivity.this, "You can do it!", Toast.LENGTH_LONG).show();
     }
 
     private void loadDogImage() {

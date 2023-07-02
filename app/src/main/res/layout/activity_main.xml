@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:backgroundTint="@color/black"
     tools:context=".MainActivity">
 
 
@@ -27,7 +28,7 @@
         android:layout_width="131dp"
         android:layout_height="65dp"
         android:layout_marginTop="48dp"
-        android:layout_marginBottom="89dp"
+        android:layout_marginBottom="20dp"
         android:spinnerMode="dropdown"
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,12 +37,13 @@
 
     <TextView
         android:id="@+id/textView"
+        android:layout_marginTop="70dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="72dp"
         android:layout_marginBottom="128dp"
         android:text=""
-        app:layout_constraintBottom_toTopOf="@+id/dogImageView"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner_languages" />
 
@@ -49,30 +51,40 @@
         android:id="@+id/abortionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="70dp"
+        android:layout_marginBottom="206dp"
         android:backgroundTint="@color/black"
         android:padding="12dp"
         android:text="Tell me."
         android:textColor="#C3BABA"
         android:textColorLink="#A89C9C"
-        app:layout_constraintBottom_toBottomOf="@+id/textView"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <!--  This Button is used for making a new HTTP request for fetching new dog image  -->
-    <ImageView
-        android:id="@+id/dogImageView"
-        android:layout_width="375dp"
-        android:layout_height="0dp"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="6dp"
         android:layout_marginBottom="135dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.432"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/switch1"
-        app:layout_constraintVertical_bias="0.88"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:layout_constraintVertical_bias="0.88">
+
+        <ImageView
+            android:id="@+id/dogImageView"
+            android:layout_width="375dp"
+            android:layout_height="270dp"
+            android:scaleType="centerCrop"
+            tools:srcCompat="@tools:sample/avatars" />
+
+    </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/nextDogButton"
@@ -95,7 +107,7 @@
         android:layout_marginEnd="18dp"
         android:layout_marginBottom="331dp"
         android:text=""
-        app:layout_constraintBottom_toTopOf="@+id/dogImageView"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
