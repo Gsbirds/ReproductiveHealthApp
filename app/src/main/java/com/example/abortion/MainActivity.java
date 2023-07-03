@@ -34,14 +34,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 
-import androidx.core.view.WindowCompat;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import androidx.viewpager.widget.ViewPager;
-
-//import com.example.abortion.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -66,20 +58,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     TabLayout tabLayout;
     Switch darkView;
     Spinner spinner_languages;
-//    private void setupViewPager() {
-//        ViewPager viewPager = findViewById(R.id.viewPager);
-//        MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
-//        viewPager.setAdapter(pagerAdapter);
-//
-//        TabLayout tabLayout = findViewById(R.id.tabLayout);
-//        tabLayout.setupWithViewPager(viewPager);
-//    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        setupViewPager();
         spinner_languages=findViewById(R.id.spinner_languages);
         textView = findViewById(R.id.textView);
         darkView=findViewById(R.id.switch1);
@@ -87,8 +70,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         nextDogButton = findViewById(R.id.nextDogButton);
         abortionButton = findViewById(R.id.abortionButton);
         tabLayout = findViewById(R.id.tabLayout);
-
-//        tabLayout.setOnTabSelectedListener(View -> poof());
         darkView.setOnClickListener(View -> setDarkView());
         nextDogButton.setOnClickListener(View -> loadDogImage());
         abortionButton.setOnClickListener(View -> loadAbortionInfo());
@@ -110,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 if (position==2) {
                     abortionButton.setVisibility(View.INVISIBLE);
                     spinnerLanguages.setVisibility(View.INVISIBLE);
-                    textView.setVisibility(View.INVISIBLE);
+                    textView.setText("Hi, My name is Gabby. I made this app to help \nwomen stay informed about abortion policies \nin their state. \nYou can contact me at: \ngabbyburgard@the-gabby.com");
                 }
                 // Add your code here for handling the selected tab
             }
@@ -120,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 int position = tab.getPosition();
                 abortionButton.setVisibility(View.VISIBLE);
                 spinnerLanguages.setVisibility(View.VISIBLE);
-                textView.setVisibility(View.VISIBLE);
+                textView.setText("");
                 // Add your code here for handling the unselected tab
             }
 
@@ -133,9 +114,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         });
     }
 
-    private void poof() {
-        abortionButton.setVisibility(View.INVISIBLE);
-    }
     private void setDarkView() {
         View rootView = getWindow().getDecorView().getRootView();
 
