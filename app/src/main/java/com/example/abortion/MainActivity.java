@@ -28,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -38,6 +39,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.viewpager.widget.ViewPager;
 
 //import com.example.abortion.databinding.ActivityMainBinding;
 
@@ -48,35 +50,48 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import android.widget.Spinner;
+import androidx.viewpager.widget.ViewPager;
+import com.google.android.material.tabs.TabLayout;
 
-import android.widget.Toast;
-
+import com.example.abortion.MyPagerAdapter;
 import java.util.HashMap;
 import java.util.Map;
+import androidx.viewpager.widget.ViewPager;
+import com.google.android.material.tabs.TabLayout;
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     ImageView mDogImageView;
     TextView textView;
     Button nextDogButton;
     Button abortionButton;
-
+    TabLayout tabLayout;
     Switch darkView;
-
+    Spinner spinner_languages;
+//    private void setupViewPager() {
+//        ViewPager viewPager = findViewById(R.id.viewPager);
+//        MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
+//        viewPager.setAdapter(pagerAdapter);
+//
+//        TabLayout tabLayout = findViewById(R.id.tabLayout);
+//        tabLayout.setupWithViewPager(viewPager);
+//    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        setupViewPager();
+        spinner_languages=findViewById(R.id.spinner_languages);
         textView = findViewById(R.id.textView);
         darkView=findViewById(R.id.switch1);
         mDogImageView = findViewById(R.id.dogImageView);
         nextDogButton = findViewById(R.id.nextDogButton);
         abortionButton = findViewById(R.id.abortionButton);
+        tabLayout = findViewById(R.id.tabLayout);
 
-        // attaching on click listener to the button so that `loadDogImage()`
-        // function is called everytime after clicking it.
+//        tabLayout.setOnTabSelectedListener(View -> poof());
         darkView.setOnClickListener(View -> setDarkView());
         nextDogButton.setOnClickListener(View -> loadDogImage());
         abortionButton.setOnClickListener(View -> loadAbortionInfo());
-
         // image of a dog will be loaded once at the start of the app
         loadDogImage();
 
@@ -87,6 +102,39 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         spinnerLanguages.setAdapter(adapter);
         spinnerLanguages.setOnItemSelectedListener(this);
 
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                // Perform actions when a tab is selected
+                int position = tab.getPosition();
+                if (position==2) {
+                    abortionButton.setVisibility(View.INVISIBLE);
+                    spinnerLanguages.setVisibility(View.INVISIBLE);
+                    textView.setVisibility(View.INVISIBLE);
+                }
+                // Add your code here for handling the selected tab
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                // Perform actions when a tab is unselected
+                int position = tab.getPosition();
+                abortionButton.setVisibility(View.VISIBLE);
+                spinnerLanguages.setVisibility(View.VISIBLE);
+                textView.setVisibility(View.VISIBLE);
+                // Add your code here for handling the unselected tab
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                // Perform actions when a tab is reselected (tapped again)
+                int position = tab.getPosition();
+                // Add your code here for handling the reselected tab
+            }
+        });
+    }
+
+    private void poof() {
+        abortionButton.setVisibility(View.INVISIBLE);
     }
     private void setDarkView() {
         View rootView = getWindow().getDecorView().getRootView();
@@ -98,11 +146,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             currentColor = ((ColorDrawable) background).getColor();
         }
         if (currentColor == Color.parseColor("#e9e0c9")) {
-            rootView.setBackgroundColor(Color.parseColor("#000000")); // Set the new color here
+            rootView.setBackgroundColor(Color.parseColor("#414a4c"));
+            textView.setTextColor(Color.parseColor("#e9e0c9"));// Set the original color here
         } else {
-            rootView.setBackgroundColor(Color.parseColor("#e9e0c9")); // Set the original color here
+            rootView.setBackgroundColor(Color.parseColor("#e9e0c9"));
+            textView.setTextColor(Color.parseColor("#414a4c"));// Set the original color here
         }
-        Toast.makeText(MainActivity.this, "You can do it!", Toast.LENGTH_LONG).show();
     }
 
     private void loadDogImage() {
