@@ -93,10 +93,14 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
         }
         if (currentColor == Color.parseColor("#e9e0c9")) {
             rootView.setBackgroundColor(Color.parseColor("#414a4c"));
-            textView.setTextColor(Color.parseColor("#e9e0c9"));// Set the original color here
+            textView.setTextColor(Color.parseColor("#e9e0c9"));
+            spinner_languages.setBackgroundColor(Color.parseColor("#e9e0c9")); // Set the original color here
+            ((TextView) spinner_languages.getSelectedView()).setTextColor(Color.parseColor("#414a4c")); // Set the text color of the Spinner
         } else {
             rootView.setBackgroundColor(Color.parseColor("#e9e0c9"));
             textView.setTextColor(Color.parseColor("#414a4c"));// Set the original color here
+            spinner_languages.setBackgroundColor(Color.parseColor("#414a4c")); // Set the background color of the Spinner
+            ((TextView) spinner_languages.getSelectedView()).setTextColor(Color.parseColor("#e9e0c9")); // Set the text color of the Spinner
         }
     }
 
