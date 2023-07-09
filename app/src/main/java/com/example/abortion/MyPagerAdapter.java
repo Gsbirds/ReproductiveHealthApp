@@ -5,23 +5,24 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-public class MyPagerAdapter extends FragmentPagerAdapter {
-    private static final int NUM_PAGES = 3;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+public class MyPagerAdapter extends FragmentStatePagerAdapter {
 
-    public MyPagerAdapter(@NonNull FragmentManager fm) {
+    public MyPagerAdapter(FragmentManager fm) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
     }
 
     @NonNull
     @Override
     public Fragment getItem(int position) {
+        // Return the corresponding Fragment based on the position
         switch (position) {
             case 0:
                 return new FirstFragment();
             case 1:
                 return new SecondFragment();
             case 2:
-                return new FirstFragment();
+                return new ResourceFragment2();
             default:
                 return null;
         }
@@ -29,7 +30,22 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return NUM_PAGES;
+        // Return the number of tabs
+        return 3;
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        // Return the title for each tab based on the position
+        switch (position) {
+            case 0:
+                return "Answers";
+            case 1:
+                return "Resources";
+            case 2:
+                return "Info";
+            default:
+                return null;
+        }
     }
 }
-

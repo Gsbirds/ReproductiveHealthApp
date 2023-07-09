@@ -34,77 +34,32 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
-
-import com.example.abortion.databinding.FragmentFirstBinding;
 import static com.example.abortion.BuildConfig.API_KEY;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.widget.Switch;
-import android.widget.TextView;
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-import com.bumptech.glide.Glide;
-import org.json.JSONException;
-import org.json.JSONObject;
-import com.google.android.material.tabs.TabLayout;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import java.util.HashMap;
-import java.util.Map;
-
 
 public class FirstFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     ImageView mDogImageView;
     TextView textView;
     Button nextDogButton;
     Button abortionButton;
-    TabLayout tabLayout;
     Switch darkView;
     Spinner spinner_languages;
     private String selectedState = "";
 
     private FragmentFirstBinding binding;
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
     @Override
-    public View onCreateView(
-
-            LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState
-    ) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_first, container, false);
-        // Access the "answers" view and perform any necessary operations
-        // For example: TextView answersView = view.findViewById(R.id.answers);
-//        binding = FragmentFirstBinding.inflate(inflater, container, false);
-//        View rootView = view.getRoot();
-        spinner_languages=view.findViewById(R.id.spinner_languages);
+
+        spinner_languages = view.findViewById(R.id.spinner_languages);
         textView = view.findViewById(R.id.textView);
-        darkView=view.findViewById(R.id.switch1);
+        darkView = view.findViewById(R.id.switch1);
         mDogImageView = view.findViewById(R.id.dogImageView);
         nextDogButton = view.findViewById(R.id.nextDogButton);
         abortionButton = view.findViewById(R.id.abortionButton);
-        tabLayout = view.findViewById(R.id.tabLayout);
         darkView.setOnClickListener(View -> setDarkView());
         nextDogButton.setOnClickListener(View -> loadDogImage());
         abortionButton.setOnClickListener(View -> loadAbortionInfo());
@@ -113,53 +68,11 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
 
         Spinner spinnerLanguages = view.findViewById(R.id.spinner_languages);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(requireContext(), R.array.languages, android.R.layout.simple_spinner_item);
-
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinnerLanguages.setAdapter(adapter);
         spinnerLanguages.setOnItemSelectedListener(this);
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                // Perform actions when a tab is selected
-                int position = tab.getPosition();
-                if (position==2) {
-                    abortionButton.setVisibility(View.INVISIBLE);
-                    spinnerLanguages.setVisibility(View.INVISIBLE);
-                    textView.setText("Hi, My name is Gabby. I made this app to help \nwomen stay informed about abortion policies \nin their state. \nYou can contact me at: \ngabbyburgard@the-gabby.com");
-                }
-                // Add your code here for handling the selected tab
-            }
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                // Perform actions when a tab is unselected
-                int position = tab.getPosition();
-                abortionButton.setVisibility(View.VISIBLE);
-                spinnerLanguages.setVisibility(View.VISIBLE);
-                textView.setText("");
-                // Add your code here for handling the unselected tab
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                // Perform actions when a tab is reselected (tapped again)
-                int position = tab.getPosition();
-                // Add your code here for handling the reselected tab
-                tabLayout = tabLayout.findViewById(R.id.tabLayout);
-                ViewPager viewPager = view.findViewById(R.id.viewPager);
-
-                // Create and set the adapter
-                MyPagerAdapter adapter1 = new MyPagerAdapter(requireActivity().getSupportFragmentManager());
-                viewPager.setAdapter(adapter1);
-
-                // Connect the ViewPager to the TabLayout
-                tabLayout.setupWithViewPager(viewPager);
-
-            }
-        });
         return view;
-
-
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -292,9 +205,6 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
         // to the Volley request queue
         volleyQueue.add(jsonObjectRequest);
     }
-
-
-
 
     @Override
     public void onDestroyView() {

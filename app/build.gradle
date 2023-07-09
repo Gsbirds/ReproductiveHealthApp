@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+
 }
 
 def localPropertiesFile = rootProject.file("local.properties")
