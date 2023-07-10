@@ -9,8 +9,8 @@
 
     <Spinner
         android:id="@+id/spinner_languages"
-        android:layout_width="131dp"
-        android:layout_height="0dp"
+        android:layout_width="143dp"
+        android:layout_height="77dp"
         android:layout_marginTop="82dp"
         android:layout_marginBottom="180dp"
         android:spinnerMode="dropdown"

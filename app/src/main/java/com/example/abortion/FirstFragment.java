@@ -94,13 +94,13 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
         if (currentColor == Color.parseColor("#e9e0c9")) {
             rootView.setBackgroundColor(Color.parseColor("#414a4c"));
             textView.setTextColor(Color.parseColor("#e9e0c9"));
-            spinner_languages.setBackgroundColor(Color.parseColor("#e9e0c9")); // Set the original color here
-            ((TextView) spinner_languages.getSelectedView()).setTextColor(Color.parseColor("#414a4c")); // Set the text color of the Spinner
+//            spinner_languages.setBackgroundColor(Color.parseColor("#e9e0c9")); // Set the original color here
+            ((TextView) spinner_languages.getSelectedView()).setTextColor(Color.parseColor("#000000")); // Set the text color of the Spinner
         } else {
             rootView.setBackgroundColor(Color.parseColor("#e9e0c9"));
             textView.setTextColor(Color.parseColor("#414a4c"));// Set the original color here
-            spinner_languages.setBackgroundColor(Color.parseColor("#414a4c")); // Set the background color of the Spinner
-            ((TextView) spinner_languages.getSelectedView()).setTextColor(Color.parseColor("#e9e0c9")); // Set the text color of the Spinner
+//            spinner_languages.setBackgroundColor(Color.parseColor("#414a4c")); // Set the background color of the Spinner
+            ((TextView) spinner_languages.getSelectedView()).setTextColor(Color.parseColor("#000000")); // Set the text color of the Spinner
         }
     }
 
@@ -155,8 +155,27 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
     }
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        View rootView = requireActivity().getWindow().getDecorView().getRootView();
+
+        // Check if the current background color matches the desired color
+        Drawable background = rootView.getBackground();
+        int currentColor = 0;
+        if (background instanceof ColorDrawable) {
+            currentColor = ((ColorDrawable) background).getColor();
+        }
         selectedState = adapterView.getItemAtPosition(i).toString();
-    }
+        if (currentColor == Color.parseColor("#e9e0c9")) {
+        ((TextView) spinner_languages.getSelectedView()).setTextColor(Color.parseColor("#000000")); // Set the text color of the Spinner
+
+    }else if (currentColor == Color.parseColor("#414a4c")){
+            ((TextView) spinner_languages.getSelectedView()).setTextColor(Color.parseColor("#FFFFFF")); // Set the text color of the Spinner
+        }
+        else{
+            ((TextView) spinner_languages.getSelectedView()).setTextColor(Color.parseColor("#FFFFFF")); // Set the text color of the Spinner
+
+        }
+
+        }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
