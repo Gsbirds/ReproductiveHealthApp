@@ -11,7 +11,11 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter {
     public MyPagerAdapter(FragmentManager fm) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
     }
-
+    @Override
+    public int getCount() {
+        // Return the number of tabs
+        return 3;
+    }
     @NonNull
     @Override
     public Fragment getItem(int position) {
@@ -26,12 +30,6 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter {
             default:
                 return null;
         }
-    }
-
-    @Override
-    public int getCount() {
-        // Return the number of tabs
-        return 3;
     }
 
     @Override

@@ -56,15 +56,16 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
 
         spinner_languages = view.findViewById(R.id.spinner_languages);
         textView = view.findViewById(R.id.textView);
-        darkView = view.findViewById(R.id.switch1);
+//        darkView = view.findViewById(R.id.switch1);
         mDogImageView = view.findViewById(R.id.dogImageView);
         nextDogButton = view.findViewById(R.id.nextDogButton);
         abortionButton = view.findViewById(R.id.abortionButton);
-        darkView.setOnClickListener(View -> setDarkView());
+//        darkView.setOnClickListener(View -> setDarkView());
         nextDogButton.setOnClickListener(View -> loadDogImage());
         abortionButton.setOnClickListener(View -> loadAbortionInfo());
         // image of a dog will be loaded once at the start of the app
         loadDogImage();
+        textView = view.findViewById(R.id.textView);
 
         Spinner spinnerLanguages = view.findViewById(R.id.spinner_languages);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(requireContext(), R.array.languages, android.R.layout.simple_spinner_item);
@@ -81,28 +82,26 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
 
     }
 
-    private void setDarkView() {
-
-        View rootView = requireActivity().getWindow().getDecorView().getRootView();
-
-        // Check if the current background color matches the desired color
-        Drawable background = rootView.getBackground();
-        int currentColor = 0;
-        if (background instanceof ColorDrawable) {
-            currentColor = ((ColorDrawable) background).getColor();
-        }
-        if (currentColor == Color.parseColor("#e9e0c9")) {
-            rootView.setBackgroundColor(Color.parseColor("#414a4c"));
-            textView.setTextColor(Color.parseColor("#e9e0c9"));
-//            spinner_languages.setBackgroundColor(Color.parseColor("#e9e0c9")); // Set the original color here
-            ((TextView) spinner_languages.getSelectedView()).setTextColor(Color.parseColor("#000000")); // Set the text color of the Spinner
-        } else {
-            rootView.setBackgroundColor(Color.parseColor("#e9e0c9"));
-            textView.setTextColor(Color.parseColor("#414a4c"));// Set the original color here
-//            spinner_languages.setBackgroundColor(Color.parseColor("#414a4c")); // Set the background color of the Spinner
-            ((TextView) spinner_languages.getSelectedView()).setTextColor(Color.parseColor("#000000")); // Set the text color of the Spinner
-        }
-    }
+//    private void setDarkView() {
+//
+//        View rootView = requireActivity().getWindow().getDecorView().getRootView();
+//
+//        // Check if the current background color matches the desired color
+//        Drawable background = rootView.getBackground();
+//        int currentColor = 0;
+//        if (background instanceof ColorDrawable) {
+//            currentColor = ((ColorDrawable) background).getColor();
+//        }
+//        if (textView != null) {
+//            if (currentColor == Color.parseColor("#e9e0c9")) {
+//                rootView.setBackgroundColor(Color.parseColor("#414a4c"));
+//                textView.setTextColor(Color.parseColor("#e9e0c9"));
+//            } else {
+//                rootView.setBackgroundColor(Color.parseColor("#e9e0c9"));
+//                textView.setTextColor(Color.parseColor("#414a4c"));
+//            }
+//        }
+//    }
 
     private void loadDogImage() {
 
@@ -164,17 +163,17 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
             currentColor = ((ColorDrawable) background).getColor();
         }
         selectedState = adapterView.getItemAtPosition(i).toString();
-        if (currentColor == Color.parseColor("#e9e0c9")) {
-        ((TextView) spinner_languages.getSelectedView()).setTextColor(Color.parseColor("#000000")); // Set the text color of the Spinner
+        if (spinner_languages != null && spinner_languages.getSelectedView() != null) {
+            if (currentColor == Color.parseColor("#e9e0c9")) {
+                ((TextView) spinner_languages.getSelectedView()).setTextColor(Color.parseColor("#000000")); // Set the text color of the Spinner
 
-    }else if (currentColor == Color.parseColor("#414a4c")){
-            ((TextView) spinner_languages.getSelectedView()).setTextColor(Color.parseColor("#FFFFFF")); // Set the text color of the Spinner
+            } else if (currentColor == Color.parseColor("#414a4c")) {
+                ((TextView) spinner_languages.getSelectedView()).setTextColor(Color.parseColor("#FFFFFF")); // Set the text color of the Spinner
+            } else {
+                ((TextView) spinner_languages.getSelectedView()).setTextColor(Color.parseColor("#FFFFFF")); // Set the text color of the Spinner
+
+            }
         }
-        else{
-            ((TextView) spinner_languages.getSelectedView()).setTextColor(Color.parseColor("#FFFFFF")); // Set the text color of the Spinner
-
-        }
-
         }
 
     @Override

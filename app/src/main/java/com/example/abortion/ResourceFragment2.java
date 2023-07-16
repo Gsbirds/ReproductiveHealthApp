@@ -1,64 +1,54 @@
 package com.example.abortion;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ResourceFragment2#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.example.abortion.databinding.FragmentResource2Binding;
+
 public class ResourceFragment2 extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public ResourceFragment2() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ResourceFragment2.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ResourceFragment2 newInstance(String param1, String param2) {
-        ResourceFragment2 fragment = new ResourceFragment2();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private TextView textView;
+    private FragmentResource2Binding binding;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentResource2Binding.inflate(inflater, container, false);
+        View view = binding.getRoot();
+        textView = view.findViewById(R.id.textView); // Initialize the textView using view.findViewById()
+        return view;
     }
 
+//    private void setDarkView() {
+//        View rootView = requireActivity().getWindow().getDecorView().getRootView();
+//        // Check if the current background color matches the desired color
+//        Drawable background = rootView.getBackground();
+//        int currentColor = 0;
+//        if (background instanceof ColorDrawable) {
+//            currentColor = ((ColorDrawable) background).getColor();
+//        }
+//        if (textView != null) {
+//            if (currentColor == Color.parseColor("#e9e0c9")) {
+//                rootView.setBackgroundColor(Color.parseColor("#414a4c"));
+//                textView.setTextColor(Color.parseColor("#e9e0c9"));
+//            } else {
+//                rootView.setBackgroundColor(Color.parseColor("#e9e0c9"));
+//                textView.setTextColor(Color.parseColor("#414a4c"));
+//            }
+//        }
+
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_resource2, container, false);
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }
