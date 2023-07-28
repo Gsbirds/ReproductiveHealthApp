@@ -41,6 +41,7 @@ import androidx.viewpager.widget.ViewPager;
 public class FirstFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     ImageView mDogImageView;
     TextView textView;
+    TextView textView2;
     Button nextDogButton;
     Button abortionButton;
     Switch darkView;
@@ -50,23 +51,32 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
     private FragmentFirstBinding binding;
     private ViewPager viewPager;
     private TabLayout tabLayout;
+    private int apiResponseCounter = 0;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_first, container, false);
 
         spinner_languages = view.findViewById(R.id.spinner_languages);
         textView = view.findViewById(R.id.textView);
-//        darkView = view.findViewById(R.id.switch1);
-        mDogImageView = view.findViewById(R.id.dogImageView);
-        nextDogButton = view.findViewById(R.id.nextDogButton);
-        abortionButton = view.findViewById(R.id.abortionButton);
-//        darkView.setOnClickListener(View -> setDarkView());
-        nextDogButton.setOnClickListener(View -> loadDogImage());
-        abortionButton.setOnClickListener(View -> loadAbortionInfo());
-        // image of a dog will be loaded once at the start of the app
-        loadDogImage();
-        textView = view.findViewById(R.id.textView);
+        textView2 = view.findViewById(R.id.textView2);
 
+        Button abortionButton = view.findViewById(R.id.abortionButton);
+
+        View.OnClickListener myClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedState = spinner_languages.getSelectedItem().toString();
+
+                // Call function 1
+                loadAbortionInfo2();
+
+                // Call function 2
+                loadAbortionInfo();
+            }
+        };
+
+        abortionButton.setOnClickListener(myClickListener);
         Spinner spinnerLanguages = view.findViewById(R.id.spinner_languages);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(requireContext(), R.array.languages, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
@@ -82,76 +92,6 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
 
     }
 
-//    private void setDarkView() {
-//
-//        View rootView = requireActivity().getWindow().getDecorView().getRootView();
-//
-//        // Check if the current background color matches the desired color
-//        Drawable background = rootView.getBackground();
-//        int currentColor = 0;
-//        if (background instanceof ColorDrawable) {
-//            currentColor = ((ColorDrawable) background).getColor();
-//        }
-//        if (textView != null) {
-//            if (currentColor == Color.parseColor("#e9e0c9")) {
-//                rootView.setBackgroundColor(Color.parseColor("#414a4c"));
-//                textView.setTextColor(Color.parseColor("#e9e0c9"));
-//            } else {
-//                rootView.setBackgroundColor(Color.parseColor("#e9e0c9"));
-//                textView.setTextColor(Color.parseColor("#414a4c"));
-//            }
-//        }
-//    }
-
-    private void loadDogImage() {
-
-        // getting a new volley request queue for making new requests
-        RequestQueue volleyQueue = Volley.newRequestQueue(requireActivity());
-        // url of the api through which we get random dog images
-        String url = "https://dog.ceo/api/breeds/image/random";
-
-        // since the response we get from the api is in JSON, we
-        // need to use `JsonObjectRequest` for parsing the
-        // request response
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                // we are using GET HTTP request method
-                Request.Method.GET,
-                // url we want to send the HTTP request to
-                url,
-                // this parameter is used to send a JSON object to the
-                // server, since this is not required in our case,
-                // we are keeping it `null`
-                null,
-
-                // lambda function for handling the case
-                // when the HTTP request succeeds
-                (Response.Listener<JSONObject>) response -> {
-                    // get the image url from the JSON object
-                    String dogImageUrl;
-                    try {
-                        dogImageUrl = response.getString("message");
-                        // load the image into the ImageView using Glide.
-                        Glide.with(requireActivity()).load(dogImageUrl).into(mDogImageView);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                },
-
-                // lambda function for handling the case
-                // when the HTTP request fails
-                (Response.ErrorListener) error -> {
-                    // make a Toast telling the user
-                    // that something went wrong
-                    Toast.makeText(requireActivity(), "Some error occurred! Cannot fetch dog image", Toast.LENGTH_LONG).show();
-                    // log the error message in the error stream
-                    Log.e("MainActivity", "loadDogImage error: ${error.localizedMessage}");
-                }
-        );
-
-        // add the json request object created above
-        // to the Volley request queue
-        volleyQueue.add(jsonObjectRequest);
-    }
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         View rootView = requireActivity().getWindow().getDecorView().getRootView();
@@ -180,13 +120,62 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+    private void loadAbortionInfo2() {
+        String myApiKey = API_KEY;
+        // getting a new volley request queue for making new requests
+        RequestQueue volleyQueue = Volley.newRequestQueue(requireActivity());
+        // url of the api through which we get abortion information
+        String url2 = "https://api.abortionpolicyapi.com/v1/insurance_coverage/states/"+ selectedState + "/";
 
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                // we are using GET HTTP request method
+                Request.Method.GET,
+                // url we want to send the HTTP request to
+                url2,
+                null,
+
+                response -> {
+                    // handle the response
+                    try {
+                        JSONObject data = response.getJSONObject(selectedState);
+                        String info = data.getString("private_coverage_no_restrictions");
+                        String info2 = data.getString("exchange_exception_life");
+                        String info3 = data.getString("exchange_exception_life");
+                        // update the TextView with the retrieved information
+                        textView2.setText("Insurance exchange exception for life: " + info2 + "," + " \nBanned after weeks since LMP:" + info + " \nType of insurance health exception:" + info3);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+
+                error -> {
+                    // handle the error
+                    Toast.makeText(requireActivity(), "Some error occurred! Cannot fetch abortion information", Toast.LENGTH_LONG).show();
+                    Log.e("MainActivity", "loadAbortionInfo error: " + error.getLocalizedMessage());
+                }
+        )
+
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                // Add the API key to the request headers
+                Map<String, String> headers = new HashMap<>();
+                headers.put("token", myApiKey);
+                return headers;
+            }
+        };
+
+        // add the json request object created above
+        // to the Volley request queue
+        volleyQueue.add(jsonObjectRequest);
+    }
     private void loadAbortionInfo() {
         String myApiKey = API_KEY;
         // getting a new volley request queue for making new requests
         RequestQueue volleyQueue = Volley.newRequestQueue(requireActivity());
         // url of the api through which we get abortion information
         String url = "https://api.abortionpolicyapi.com/v1/gestational_limits/states/"+ selectedState + "/";
+        String url2 = "https://api.abortionpolicyapi.com/v1/insurance_coverage/states/"+ selectedState + "/";
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 // we are using GET HTTP request method
@@ -201,8 +190,9 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
                         JSONObject data = response.getJSONObject(selectedState);
                         String info = data.getString("banned_after_weeks_since_LMP");
                         String info2 = data.getString("exception_life");
+                        String info3 = data.getString("exception_health");
                         // update the TextView with the retrieved information
-                        textView.setText("Exception for life: "+ info2 +"," + " \nbanned after weeks since LMP:"+ info);
+                        textView.setText("Exception for life: "+ info2 +"," + " \nBanned after weeks since LMP:"+ info+" \n Health exception:" + info3);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -213,7 +203,9 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
                     Toast.makeText(requireActivity(), "Some error occurred! Cannot fetch abortion information", Toast.LENGTH_LONG).show();
                     Log.e("MainActivity", "loadAbortionInfo error: " + error.getLocalizedMessage());
                 }
-        ) {
+        )
+
+        {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 // Add the API key to the request headers
@@ -233,5 +225,4 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
         super.onDestroyView();
         binding = null;
     }
-
 }
