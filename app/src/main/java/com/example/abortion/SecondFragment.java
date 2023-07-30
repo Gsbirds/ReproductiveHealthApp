@@ -25,10 +25,15 @@ public class SecondFragment extends Fragment {
         binding = FragmentSecondBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         setupHyperlink();
+        setupHyperlink1();
         return view;
     }
     private void setupHyperlink() {
         TextView linkTextView = binding.textviewSecond;
+        linkTextView.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+    private void setupHyperlink1() {
+        TextView linkTextView = binding.textviewThird;
         linkTextView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 

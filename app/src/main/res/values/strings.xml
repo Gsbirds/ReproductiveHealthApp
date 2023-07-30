@@ -78,6 +78,9 @@
     <string name="Info2">e-mail- gabbyburgard@the-gabby.com \nwebsite- https://portfolio.the-gabby.com
     </string>
     <string name="hyperlink">Need help funding your reproductive health choice? Click here- <a href="https://abortionfunds.org/need-abortion/">https://abortionfunds.org/need-abortion/</a></string>
+    <string name="hyperlink2">Need help finding a place to exercise your reproductive health choice? Click here- <a href="https://www.abortionfinder.org/">https://www.abortionfinder.org/</a></string>
+    <string name="hyperlink3">Feeling a bit confused about the abortion pill? Click here- <a href="https://www.abortionfinder.org/">https://www.abortionfinder.org/abortion-types/pill</a></string>
+    <string name="hyperlink4">Feeling a bit confused about the abortion procedure/surgery? Click here- <a href="https://www.abortionfinder.org/">https://www.abortionfinder.org/abortion-types/procedure</a></string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

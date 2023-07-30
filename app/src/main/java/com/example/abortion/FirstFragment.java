@@ -42,6 +42,7 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
     ImageView mDogImageView;
     TextView textView;
     TextView textView2;
+    TextView textView3;
     Button nextDogButton;
     Button abortionButton;
     Switch darkView;
@@ -60,6 +61,7 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
         spinner_languages = view.findViewById(R.id.spinner_languages);
         textView = view.findViewById(R.id.textView);
         textView2 = view.findViewById(R.id.textView2);
+        textView3 = view.findViewById(R.id.textView2);
 
         Button abortionButton = view.findViewById(R.id.abortionButton);
 
@@ -73,6 +75,8 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
 
                 // Call function 2
                 loadAbortionInfo();
+
+                loadAbortionInfo3();
             }
         };
 
@@ -140,9 +144,58 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
                         JSONObject data = response.getJSONObject(selectedState);
                         String info = data.getString("private_coverage_no_restrictions");
                         String info2 = data.getString("exchange_exception_life");
-                        String info3 = data.getString("exchange_exception_life");
+                        String info3 = data.getString("exchange_exception_rape_or_incest");
                         // update the TextView with the retrieved information
-                        textView2.setText("Insurance exchange exception for life: " + info2 + "," + " \nBanned after weeks since LMP:" + info + " \nType of insurance health exception:" + info3);
+                        textView2.setText("Insurance exchange exception for life: " + info2 + "," + " \nInsurance exchange exception for life:" + info + " \nInsurance exchange exception for rape or \nincest:" + info3);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+
+                error -> {
+                    // handle the error
+                    Toast.makeText(requireActivity(), "Some error occurred! Cannot fetch abortion information", Toast.LENGTH_LONG).show();
+                    Log.e("MainActivity", "loadAbortionInfo error: " + error.getLocalizedMessage());
+                }
+        )
+
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                // Add the API key to the request headers
+                Map<String, String> headers = new HashMap<>();
+                headers.put("token", myApiKey);
+                return headers;
+            }
+        };
+
+        // add the json request object created above
+        // to the Volley request queue
+        volleyQueue.add(jsonObjectRequest);
+    }
+    private void loadAbortionInfo3() {
+        String myApiKey = API_KEY;
+        // getting a new volley request queue for making new requests
+        RequestQueue volleyQueue = Volley.newRequestQueue(requireActivity());
+        // url of the api through which we get abortion information
+        String url2 = "https://api.abortionpolicyapi.com/v1/waiting_periods/states/"+ selectedState + "/";
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                // we are using GET HTTP request method
+                Request.Method.GET,
+                // url we want to send the HTTP request to
+                url2,
+                null,
+
+                response -> {
+                    // handle the response
+                    try {
+                        JSONObject data = response.getJSONObject(selectedState);
+                        String info = data.getString("waiting_period_hours");
+                        String info2 = data.getString("counseling_visits");
+                        String info3 = data.getString("counseling_waived_condition");
+                        // update the TextView with the retrieved information
+                        textView3.setText("Waiting period hours: " + info2 + "," + " \nNumber of counseling visits required before abortion allowed:" + info + " \nCounseling can be waived based on condition:" + info3);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -192,7 +245,7 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemSelecte
                         String info2 = data.getString("exception_life");
                         String info3 = data.getString("exception_health");
                         // update the TextView with the retrieved information
-                        textView.setText("Exception for life: "+ info2 +"," + " \nBanned after weeks since LMP:"+ info+" \n Health exception:" + info3);
+                        textView.setText("Exception for life: "+ info2 +"," + " \nBanned after weeks since LMP:"+ info+" \nHealth exception:" + info3);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
